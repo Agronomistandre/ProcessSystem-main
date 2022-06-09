@@ -1,0 +1,208 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ProcessSystem",
+    "description": "Тестовое задание",
+    "version": "v1.0"
+  },
+  "paths": {
+    "/api/Register/RegisterUrl": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "operationId": "RegisterUrl",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessSystem.Contracts.RegisterRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessSystem.Contracts.RegisterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessSystem.Contracts.RegisterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessSystem.Contracts.RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[System.String]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[System.String]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[System.String]"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Server Error"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/Register/UnRegisterUrl": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "operationId": "UnRegisterUrl",
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[ProcessSystem.Contracts.Register]"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[ProcessSystem.Contracts.Register]"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessSystem.Contracts.BaseResponse`1[ProcessSystem.Contracts.Register]"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Server Error"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProcessSystem.Contracts.BaseResponse`1[ProcessSystem.Contracts.Register]": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProcessSystem.Contracts.Register"
+          }
+        }
+      },
+      "ProcessSystem.Contracts.BaseResponse`1[System.String]": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ProcessSystem.Contracts.Register": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true,
+            "format": "int64"
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "processTypes": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          }
+        }
+      },
+      "ProcessSystem.Contracts.RegisterRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "processTypesList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [
+        "Bearer"
+      ]
+    }
+  ]
+}

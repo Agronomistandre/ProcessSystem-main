@@ -1,0 +1,89 @@
+﻿@page "/register"
+@using ProcessSystem.UI.Blazor.Client.Models
+@using System.Text.Json
+@using System.Text
+@inject HttpClient Http
+
+<h1>Register in Process System</h1>
+
+<p>This component demonstrates Register/Unregister</p>
+
+@if (_forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>@_forecasts</p>
+}
+
+<EditForm Model="@_model" OnValidSubmit="@RegisterProcess">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+    <InputText id="name" @bind-Value="_model.Name" placeholder="Название"></InputText>
+    <InputText id="url" @bind-Value="_model.Url" placeholder="Ссылка на callback"></InputText>
+    @if (_model.ProcessTypesList is not null)
+    {
+        
+        @foreach(var item in _model.ProcessTypesList)
+        {
+            <div>
+                @item
+                <a class="btn btn-dark" @onclick="() => DeleteItem(item)">-</a>
+            </div>
+        }
+        <div>
+            <InputText id="type first" @bind-Value="_itemToAdd" placeholder="Тип бизнес процесса"></InputText>
+            <a class="btn btn-group" @onclick="AddItem">+</a>
+        </div>
+    }
+    </div>
+    <button class="btn small btn-primary" type="submit">Register</button>
+</EditForm>
+
+<button class="btn btn-primary" @onclick="UnregisterProcess">Unregister</button>
+<button class="btn btn-primary" @onclick="CheckTokenInCache">Check token</button>
+
+@code {
+    private readonly RegisterFormModel _model = new RegisterFormModel() { ProcessTypesList = new List<string>() };
+    private string _itemToAdd;
+    private string _forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _forecasts = "2132231";
+    }
+
+    private async Task RegisterProcess()
+    {
+        var content = JsonSerializer.Serialize(_model);
+
+        var response = await Http.PostAsync("Register/register", new StringContent(content, Encoding.UTF8, "application/json"));
+
+        _forecasts = await response.Content.ReadAsStringAsync();
+    }
+
+    private void UnregisterProcess()
+    {
+        _forecasts = "Un Reg";
+    }
+
+    private async Task CheckTokenInCache()
+    {
+        _forecasts = "cachedToken " + await Http.GetStringAsync("Register/CheckToken");
+    }
+
+    private void AddItem()
+    {
+        if (_model.ProcessTypesList.Contains(_itemToAdd) || string.IsNullOrWhiteSpace(_itemToAdd))
+            return;
+
+        _model.ProcessTypesList.Add(_itemToAdd);
+    }
+
+    private void DeleteItem(string item)
+    {
+        _model.ProcessTypesList.Remove(item);
+    }
+}
