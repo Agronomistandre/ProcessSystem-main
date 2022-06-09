@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{DA708340-0C6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E4608607-3ADB-43AB-AFD7-F1EF77825C71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMicroservice", "TestMicroservice\TestMicroservice.csproj", "{77338F80-E670-49D1-9F3C-AE4B754E8683}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMicroservice", "src\TestMicroservice\TestMicroservice.csproj", "{77338F80-E670-49D1-9F3C-AE4B754E8683}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
