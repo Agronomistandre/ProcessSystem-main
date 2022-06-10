@@ -1,7 +1,7 @@
 ﻿namespace ProcessSystem.Implementation
 {
-    public class TokenParam
+    public class NameParam
     {
-        public string Token { get; set; }
+        public string Name { get; set; }
     }
 }

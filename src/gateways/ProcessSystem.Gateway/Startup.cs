@@ -13,7 +13,6 @@ using ProcessSystem.Middleware;
 using ProcessSystem.Token;
 using Prometheus;
 using ProcessSystem.Implementation;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ProcessSystem
 {
@@ -67,7 +66,7 @@ namespace ProcessSystem
             // Registers required services for health checks
             services.AddHealthChecksUI().AddInMemoryStorage();
             services.AddHttpClient<IStartProcessService, StartProcessService>();
-            services.Configure<TokenParam>(options => Configuration.GetSection("TokenParam").Bind(options));
+            services.Configure<NameParam>(options => Configuration.GetSection("NameParam").Bind(options));
         }
 
 

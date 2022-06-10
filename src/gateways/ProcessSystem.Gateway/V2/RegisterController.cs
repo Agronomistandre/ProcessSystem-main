@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using ProcessSystem.Contracts;
 using ProcessSystem.DB;
+using ProcessSystem.Implementation;
 using ProcessSystem.Token;
 
 namespace ProcessSystem.V2
@@ -23,12 +25,14 @@ namespace ProcessSystem.V2
         private readonly ILogger<RegisterController> _logger;
         private readonly IRegisterRepository _registerRepository;
         private readonly IToken _token;
+        private readonly NameParam _nameParam;
 
-        public RegisterController(ILogger<RegisterController> logger, IToken token, IRegisterRepository registerRepository)
+        public RegisterController(ILogger<RegisterController> logger, IToken token, IRegisterRepository registerRepository, IOptions<NameParam> nameParam)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _token = token ?? throw new ArgumentNullException(nameof(token));
             _registerRepository = registerRepository ?? throw new ArgumentNullException(nameof(registerRepository));
+            _nameParam = nameParam.Value;
         }
 
         [AllowAnonymous]
@@ -44,12 +48,14 @@ namespace ProcessSystem.V2
 
                 ValidateRequest(registerRequest);
 
+                
                 var token = new RegisterTokenResponse(_token.GenerateToken()).Token;
 
                 Register register =
                     new Register(token,
                         registerRequest.Url,
-                        registerRequest.Name);
+                        /// Проверка параметра из appsettings.
+                        _nameParam.Name);
                 register.SetEventTypes(registerRequest.ProcessTypesList);
 
                 if (await _registerRepository.FindByNameAndUrlAsync(register) is not null)

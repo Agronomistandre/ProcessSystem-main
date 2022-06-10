@@ -23,13 +23,11 @@ namespace ProcessSystem.UnitTests
             RegisterRepositoryMock.DefaultUrl,
             RegisterRepositoryMock.DefaultUrl
         );
-        private readonly Mock<IOptions<TokenParam>> _options = new Mock<IOptions<TokenParam>>();
 
 
         public RegisterTest()
         {
             _token.Setup(t => t.GenerateToken()).Returns(RegisterRepositoryMock.DefaultToken);
-            _options.Setup(o => o.Value).Returns(new TokenParam() { Token = RegisterRepositoryMock.DefaultToken });
         }
 
         [TestMethod]
@@ -40,7 +38,7 @@ namespace ProcessSystem.UnitTests
             repositoryMock.SetupFindByChannelAndUrlFailure();
             repositoryMock.SetupUnitOfWorkSuccess();
 
-            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject(), _options.Object);
+            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject());
 
             var res = await controller.Register(
                 new RegisterRequest()
@@ -59,7 +57,7 @@ namespace ProcessSystem.UnitTests
             var repositoryMock = new RegisterRepositoryMock();
             repositoryMock.SetupFindByChannelAndUrlSuccess();
 
-            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject(), _options.Object);
+            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject());
     
 
             var res = await controller.Register(
@@ -83,7 +81,7 @@ namespace ProcessSystem.UnitTests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers[HeaderNames.Authorization] = RegisterRepositoryMock.DefaultToken;
 
-            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject(), _options.Object)
+            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject())
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -105,7 +103,7 @@ namespace ProcessSystem.UnitTests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers[HeaderNames.Authorization] = RegisterRepositoryMock.DefaultToken;
 
-            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject(), _options.Object)
+            var controller = new RegisterController(_logger.Object, _token.Object, repositoryMock.GetMockObject())
             {
                 ControllerContext = new ControllerContext
                 {
